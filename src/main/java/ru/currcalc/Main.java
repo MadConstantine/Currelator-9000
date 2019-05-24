@@ -6,7 +6,7 @@ import java.io.*;
 public class Main {
 	
 	public static void main(String[] args) {
-		//upload settings from file
+		//upload settings from file settings.properties
 		Currency.loadSettings();
 		
 		// main loop, command-line interface for user

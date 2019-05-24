@@ -112,35 +112,47 @@ public class Currency {
 	
 	
 	// converts currencies
-	public Currency convertTo(int type) {
+	public Currency convertTo(int type) throws CurrencyException {
 		
-		BigDecimal newAmount = new BigDecimal(0);		
+		BigDecimal newAmount = new BigDecimal(0);
+		
+		switch (this.type) {
+		//
+		case (0):
+			throw new CurrencyException ("You trying to convert currency without type!");
+		
 		// Dollars convert to something
-		if (this.type == Currency.DOLLARS) {
+		case (Currency.DOLLARS):
 			switch (type) {
-			//convert to rubles
 			case Currency.RUBLES:
 				newAmount = this.amount.multiply(Currency.ru_DOLL);
 				break;
-			// to add variants in case you want to add types of currencies
+				
+			// add cases if you want to add types of currencies
 			}
-		}
+			break;
 		
 		// Rubles convert to something
-		if (this.type == Currency.RUBLES) {
+		case (Currency.RUBLES):
 			switch (type) {
-			//convert to dollars
 			case Currency.DOLLARS:
 				newAmount = this.amount.divide(Currency.ru_DOLL, 2, roundingMode);
 				break;
-			// to add variants in case you want to add types of currencies
+				
+			// add cases if you want to add types of currencies
 			}
+			break;
+			
+		//
+		//add cases if you increasing number of currencies
+		//
 		}
 		return new Currency(newAmount, type);
 	}
 	
 	
-	// converts to string in order to print it, overrides Object method
+	@Override
+	// converts currency container to string in order to print it
 	public String toString() {
 		// filling in string and returning it
 		String outCome = new String();
@@ -158,9 +170,11 @@ public class Currency {
 			case Currency.RUBLES:
 				outCome = (this.amount.abs()).toString() + 'ð';
 				break;
-			// what happened ???	
+			//
+			// add here another case for other currencies 	
+			//	
 			case 0:
-				System.out.println("type == 0!!");
+				System.out.println("Unknown type of currency!");
 		}
 		return (outCome);
 	}

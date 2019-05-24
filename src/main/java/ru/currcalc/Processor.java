@@ -6,14 +6,12 @@ import java.util.*;
 public final class Processor {
 	
 	//method navigates through tree of commands in command line and returns the summ of all operands
-	public static Currency lineParser(String line) {
-		
+	public static Currency lineParser(String line) {		
 		List<Currency> operandsList = new ArrayList<Currency>();
 		Currency summOfAll = new Currency(new BigDecimal(0),0);
 		
 		// parser body
-		for (int i=0; i<line.length(); i++) {
-			
+		for (int i=0; i<line.length(); i++) {			
 			switch (line.charAt(i)) {
 			// if parser meets dollars on its way
 			case '$':
@@ -95,22 +93,22 @@ public final class Processor {
 			
 			// if parser meets convertation command on the way
 			case 't':
-				int type = 0;
+				int typeFinal = 0;
 				int startIndex = 0;
 				int endIndex = 0;
 				
 				if (line.regionMatches(i+1, "oDollars", 0, 8)) {
-					type = Currency.DOLLARS;
+					typeFinal = Currency.DOLLARS;
 					startIndex = i+10; // 'oDollars('
 				}
 				if (line.regionMatches(i+1, "oRubles", 0, 7)) {
-					type = Currency.RUBLES;
+					typeFinal = Currency.RUBLES;
 					startIndex = i+9; // 'oRubles('
 				}
-				// here you can add another types of convertation commands
+				// here you can add another types of convertation commands through adding if ()
 				
 				// 
-				if (type != 0) {
+				if (typeFinal != 0) {
 					// counting length of substring inside convertation command
 					int bracketsCounter = 1;
 					for (int j=startIndex; j<line.length(); j++) {
@@ -127,7 +125,12 @@ public final class Processor {
 					}
 					// recursively dig into substring and writes subsumm into list					
 					Currency subSumm = Processor.lineParser(line.substring(startIndex, endIndex));
-					operandsList.add(subSumm.convertTo(type));
+					try {
+						operandsList.add(subSumm.convertTo(typeFinal));
+					} catch (CurrencyException e) {
+						System.out.println(e.getMessage());
+						e.printStackTrace();
+					}
 				}
 				else {
 					//exception! invalid or unsupported convertation command
