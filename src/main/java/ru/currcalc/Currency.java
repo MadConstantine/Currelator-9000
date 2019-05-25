@@ -181,7 +181,7 @@ public class Currency {
 }
 
 
-@SuppressWarnings("serial")
+@SuppressWarnings("serial") // cause im not going to uncompatibly change this class
 class CurrencyException extends Exception {
 
 	public CurrencyException(String message) {

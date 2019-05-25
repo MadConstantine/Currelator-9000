@@ -29,6 +29,10 @@ public class Main {
 			catch (IOException ioEx) {
 				System.out.print("Invalid query! (IOE)");
 			}
+			catch (ProcessorException pe) {
+				System.out.println(pe.getMessage());
+				pe.printStackTrace();
+			}
 			System.out.print("\n");
 		}
 	}

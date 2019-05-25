@@ -6,7 +6,7 @@ import java.util.*;
 public final class Processor {
 	
 	//method navigates through tree of commands in command line and returns the summ of all operands
-	public static Currency lineParser(String line) {		
+	public static Currency lineParser(String line) throws ProcessorException {		
 		List<Currency> operandsList = new ArrayList<Currency>();
 		Currency summOfAll = new Currency(new BigDecimal(0),0);
 		
@@ -69,7 +69,7 @@ public final class Processor {
 				break;
 			
 			// if parser meets rubles on its way: 'ð' in cyrillic
-			case 'ð':
+			case 'ð': // cyrillic
 				int numOfDigits = 0;
 				for (int j=i-1; j>=0; j--) {
 					if ((line.charAt(j) == '+') || (line.charAt(j) == '(')) {
@@ -133,8 +133,7 @@ public final class Processor {
 					}
 				}
 				else {
-					//exception! invalid or unsupported convertation command
-					System.out.println("invalid or unsupported convertation command!!!");
+					throw new ProcessorException("invalid or unsupported convertation command!");
 				}
 				
 				// important! to prevent counting operands twice!
@@ -171,5 +170,14 @@ public final class Processor {
 			}
 		}
 		return preparedLine.substring(0);
+	}
+}
+
+
+@SuppressWarnings("serial") // cause im not going to uncompatibly change this class
+class ProcessorException extends Exception {
+
+	public ProcessorException(String message) {
+		super(message);
 	}
 }
